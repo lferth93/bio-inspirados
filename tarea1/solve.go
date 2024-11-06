@@ -1,13 +1,12 @@
 package main
 
 import (
-	"fmt"
 	"math"
 	"math/rand"
 )
 
-func solve(data [][]float64, iter int) []int {
-
+func solve(data [][]float64, iter int,neighbors, t int ) ([]int,float64) {
+	//fmt.Println("iterations: ",iter)
 	centroid := [][]float64{
 		{0, 0, 0, 0},
 		{0, 0, 0, 0},
@@ -15,14 +14,13 @@ func solve(data [][]float64, iter int) []int {
 	}
 
 	cont := []int{0, 0, 0}
-	tabu := newFixedList[int](7)
+	tabu := newFixedList[int](t)
 
 	sol, cost := initSolution(data, centroid, cont)
 	bestSol, bestCost := make([]int, 150), cost
-	fmt.Println(bestCost)
 	copy(bestSol, sol)
 	for i := 0; i < iter; i++ {
-		n := neighborhood(10)
+		n := neighborhood(neighbors)
 		bestLocal := math.MaxFloat64
 		bestLocalN := 0
 		for j := range n {
@@ -36,7 +34,7 @@ func solve(data [][]float64, iter int) []int {
 		}
 		if bestLocal < bestCost {
 			bestCost = bestLocal
-			fmt.Println(bestCost)
+		//	fmt.Println(bestCost, " at iteration ",i)
 		} else {
 			if tabu.has(n[bestLocalN][0]) {
 				continue
@@ -50,7 +48,7 @@ func solve(data [][]float64, iter int) []int {
 			copy(bestSol, sol)
 		}
 	}
-	return bestSol
+	return bestSol,bestCost
 }
 
 func initSolution(data, centroid [][]float64, cont []int) ([]int, float64) {
