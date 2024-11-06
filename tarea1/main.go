@@ -39,26 +39,24 @@ func readData(file string) [][]float64 {
 }
 
 func normalize(data [][]float64) {
-	max := make([]float64, len(data[0]))
-	min := make([]float64, len(data[0]))
+	maxs := make([]float64, len(data[0]))
+	mins := make([]float64, len(data[0]))
 
-	for i := range data[0] {
-		min[i] = data[0][i]
-	}
+	copy(mins, data[0])
 
 	for i := range data {
 		for j := range data[i] {
-			if data[i][j] > max[j] {
-				max[j] = data[i][j]
+			if data[i][j] > maxs[j] {
+				maxs[j] = data[i][j]
 			}
-			if data[i][j] < min[j] {
-				min[j] = data[i][j]
+			if data[i][j] < mins[j] {
+				mins[j] = data[i][j]
 			}
 		}
 	}
 	for i := range data {
 		for j := range data[i] {
-			data[i][j] = (data[i][j] - min[j]) / (max[j] - min[j])
+			data[i][j] = (data[i][j] - mins[j]) / (maxs[j] - mins[j])
 		}
 	}
 }

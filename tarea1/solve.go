@@ -8,12 +8,14 @@ import (
 func solve(data [][]float64, iter int) []int {
 
 	centroid := [][]float64{
-		[]float64{0, 0, 0, 0},
-		[]float64{0, 0, 0, 0},
-		[]float64{0, 0, 0, 0},
+		{0, 0, 0, 0},
+		{0, 0, 0, 0},
+		{0, 0, 0, 0},
 	}
 
 	sol := initSolution(data, centroid)
+	fmt.Println(centroid)
+	fmt.Println(data)
 	return sol
 }
 
@@ -26,7 +28,18 @@ func initSolution(data, centroid [][]float64) []int {
 		cont[sol[i]]++
 	}
 
-	fmt.Println(cont)
+	for i := range sol {
+		for j := range centroid[sol[i]] {
+			centroid[sol[i]][j] += data[i][j]
+		}
+	}
+
+	for i := range centroid {
+		den := float64(max(1, cont[i]))
+		for j := range centroid[i] {
+			centroid[i][j] /= den
+		}
+	}
 
 	return sol
 }
