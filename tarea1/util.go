@@ -6,6 +6,11 @@ import (
 	"log"
 	"os"
 	"strings"
+
+	"gonum.org/v1/plot"
+	"gonum.org/v1/plot/plotter"
+	"gonum.org/v1/plot/plotutil"
+	"gonum.org/v1/plot/vg"
 )
 
 type fixedList[T comparable] struct {
@@ -93,4 +98,26 @@ func readData(file string) [][]float64 {
 	}
 
 	return data
+}
+
+func makePlot(values []plotter.Values, names []string) error {
+
+	p := plot.New()
+
+	p.Title.Text = "Gráfica de cajas"
+	p.Y.Label.Text = "Costos"
+	p.X.Label.Text = "Iteraciones"
+
+	err := plotutil.AddBoxPlots(p, vg.Points(30),
+		names[0], values[0],
+		names[1], values[1],
+		names[2], values[2])
+	if err != nil {
+		return err
+	}
+
+	if err := p.Save(3*vg.Inch, 4*vg.Inch, "boxplot.png"); err != nil {
+		return err
+	}
+	return nil
 }

@@ -1,18 +1,18 @@
 package main
 
-import (
-	"fmt"
-)
+import "gonum.org/v1/plot/plotter"
 
 func main() {
 	data := readData("IRIS.csv")
 	normalize(data)
-	for i:=10; i< 50; i++{
-		for j:= 5; j< 50; j++{
-			_,cost := solve(data, 500,i,j)
-			fmt.Println(cost,i,j)
+	values := make([]plotter.Values, 3)
+	names := []string{"50", "200", "500"}
+	for i, iter := range []int{50, 200, 500} {
+		values[i] = make(plotter.Values, 30)
+		for j := range values[i] {
+			_, cost := solve(data, iter, 50, 15)
+			values[i][j] = cost
 		}
 	}
-
-
+	makePlot(values, names)
 }

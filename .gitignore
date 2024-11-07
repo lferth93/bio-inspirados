@@ -24,3 +24,5 @@ go.work.sum
 # env file
 .env
 tarea1/tarea1
+tarea1/boxplot.png
+tarea1/go.sum
