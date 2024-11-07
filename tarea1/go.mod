@@ -4,6 +4,8 @@ go 1.22.0
 
 toolchain go1.23.2
 
+require gonum.org/v1/plot v0.15.0
+
 require (
 	gioui.org v0.2.0 // indirect
 	gioui.org/cpu v0.0.0-20220412190645-f1e9e8c3b1f7 // indirect
@@ -24,6 +26,5 @@ require (
 	golang.org/x/image v0.21.0 // indirect
 	golang.org/x/sys v0.26.0 // indirect
 	golang.org/x/text v0.19.0 // indirect
-	gonum.org/v1/plot v0.15.0 // indirect
 	rsc.io/pdf v0.1.1 // indirect
 )

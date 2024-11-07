@@ -108,7 +108,7 @@ func makePlot(values []plotter.Values, names []string) error {
 	p.Y.Label.Text = "Costos"
 	p.X.Label.Text = "Iteraciones"
 
-	err := plotutil.AddBoxPlots(p, vg.Points(30),
+	err := plotutil.AddBoxPlots(p, vg.Points(25),
 		names[0], values[0],
 		names[1], values[1],
 		names[2], values[2])
@@ -116,7 +116,7 @@ func makePlot(values []plotter.Values, names []string) error {
 		return err
 	}
 
-	if err := p.Save(3*vg.Inch, 4*vg.Inch, "boxplot.png"); err != nil {
+	if err := p.Save(4*vg.Inch, 4*vg.Inch, "boxplot.png"); err != nil {
 		return err
 	}
 	return nil
