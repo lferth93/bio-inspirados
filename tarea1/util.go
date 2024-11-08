@@ -108,10 +108,13 @@ func makePlot(values []plotter.Values, names []string) error {
 	p.Y.Label.Text = "Costos"
 	p.X.Label.Text = "Iteraciones"
 
-	err := plotutil.AddBoxPlots(p, vg.Points(25),
-		names[0], values[0],
-		names[1], values[1],
-		names[2], values[2])
+	plotData := make([]interface{}, 0, 2*len(values))
+
+	for i := range values {
+		plotData = append(plotData, names[i], values[i])
+	}
+
+	err := plotutil.AddBoxPlots(p, vg.Points(25), plotData...)
 	if err != nil {
 		return err
 	}

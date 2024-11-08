@@ -11,11 +11,11 @@ func main() {
 	data := readData("IRIS.csv")
 	normalize(data)
 	values := make([]plotter.Values, 4)
-	names := []string{"50", "200", "500"}
+	names := []string{"50", "100", "200", "500"}
 	bestCost := math.MaxFloat64
 	bestSol := make([]int, 150)
-	for i, iter := range []int{50, 200, 500} {
-		values[i] = make(plotter.Values, 30)
+	for i, iter := range []int{50, 100, 200, 500} {
+		values[i] = make(plotter.Values, 50)
 		for j := range values[i] {
 			sol, cost := solve(data, iter, 20, 7)
 			values[i][j] = cost
