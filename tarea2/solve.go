@@ -5,12 +5,7 @@ import (
 	"math/rand"
 )
 
-const (
-	EXP      = 0
-	BINOMIAL = 1
-)
-
-func solve(data [][]float64, p int, iter int, f, cr float64, mType int) (float64, []int) {
+func solve(data [][]float64, p int, iter int, f, cr float64) (float64, []int) {
 	pop := populate(p)
 	vecs := make([][]int, p)
 	costs := make([]float64, p)
@@ -24,7 +19,7 @@ func solve(data [][]float64, p int, iter int, f, cr float64, mType int) (float64
 	for i := 0; i < iter; i++ {
 		for j := range pop {
 			mut := mutate(pop, j, f)
-			son := merge(pop[j], mut, cr, mType)
+			son := merge(pop[j], mut, cr)
 			cost, vec := getCost(son, data)
 			if cost < costs[j] {
 				copy(pop[j], son)
@@ -47,12 +42,44 @@ func solve(data [][]float64, p int, iter int, f, cr float64, mType int) (float64
 	return bestCost, bestSol
 }
 
-func merge(f [][]float64, mut [][]float64, cr float64, mType int) [][]float64 {
-	panic("unimplemented")
+func merge(f [][]float64, mut [][]float64, cr float64) [][]float64 {
+	res := make([][]float64, len(f))
+	for i := range res {
+		res[i] = make([]float64, len(f[0]))
+		for j := range res[0] {
+			r := rand.Float64()
+			if r < cr {
+				res[i][j] = mut[i][j]
+			} else {
+				res[i][j] = f[i][j]
+			}
+		}
+	}
+	i, j := rand.Intn(len(res)), rand.Intn(len(res[0]))
+	res[i][j] = mut[i][j]
+	return res
 }
 
-func mutate(pop [][][]float64, i int, f float64) [][]float64 {
-	panic("unimplemented")
+func mutate(pop [][][]float64, t int, f float64) [][]float64 {
+	elected := make([]bool, len(pop))
+	elected[t] = true
+	v := [3]int{}
+	for i := range v {
+		tmp := rand.Intn(len(pop))
+		for elected[tmp] {
+			tmp = rand.Intn(len(pop))
+		}
+		v[i] = tmp
+	}
+
+	mut := make([][]float64, len(pop[0]))
+	for i := range mut {
+		mut[i] = make([]float64, len(pop[0][0]))
+		for j := range mut[i] {
+			mut[i][j] = pop[v[0]][i][j] + f*(pop[v[1]][i][j]-pop[v[2]][i][j])
+		}
+	}
+	return mut
 }
 
 func populate(ps int) [][][]float64 {
