@@ -71,9 +71,9 @@ func makePlot(values []plotter.Values, names []string) error {
 
 	p := plot.New()
 
-	p.Title.Text = "Gráfica de cajas"
+	p.Title.Text = "Gráfica de cajas DE"
 	p.Y.Label.Text = "Costos"
-	p.X.Label.Text = "Iteraciones"
+	p.X.Label.Text = "Generaciones"
 
 	plotData := make([]interface{}, 0, 2*len(values))
 

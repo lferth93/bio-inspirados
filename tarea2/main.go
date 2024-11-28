@@ -17,7 +17,7 @@ func main() {
 	for i, iter := range []int{50, 100, 200, 500} {
 		values[i] = make(plotter.Values, 50)
 		for j := range values[i] {
-			cost, sol := solve(data, 10, iter, 0.7, 0.7)
+			cost, sol := solve(data, 10, iter, 0.8, 0.3)
 			values[i][j] = cost
 			if cost < bestCost {
 				copy(bestSol, sol)
