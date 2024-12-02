@@ -29,3 +29,6 @@ tarea1/go.sum
 tarea2/go.sum
 tarea2/tarea2
 tarea2/boxplot.png
+.vscode/settings.json
+kmeans/go.sum
+kmeans/boxplot.png
