@@ -39,7 +39,7 @@ func solve(data [][]float64, p int, iter int, f, cr float64) (float64, []int) {
 		}
 	}
 
-	return bestCost, bestSol
+	return realCost(bestSol, data), bestSol
 }
 
 func merge(f [][]float64, mut [][]float64, cr float64) [][]float64 {
@@ -115,4 +115,31 @@ func getCost(sol [][]float64, data [][]float64) (float64, []int) {
 		vec[i] = cl
 	}
 	return cost, vec
+}
+
+func realCost(sol []int, data [][]float64) float64 {
+	centroid := make([][]float64, 3)
+
+	for i := range centroid {
+		centroid[i] = make([]float64, len(data[0]))
+	}
+
+	count := make([]int, len(centroid))
+
+	for i, c := range sol {
+		count[c]++
+		for j := range centroid[c] {
+			centroid[c][j] += data[i][j]
+		}
+	}
+	for i := range centroid {
+		for j := range centroid[i] {
+			centroid[i][j] /= float64(count[i])
+		}
+	}
+	cost := 0.0
+	for i, c := range sol {
+		cost += manhattan(data[i], centroid[c])
+	}
+	return cost
 }
