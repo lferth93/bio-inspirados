@@ -1,0 +1,89 @@
+#import "@preview/ilm:1.3.0": *
+#set text(lang: "es")
+#show heading: it =>{
+  block(it.body)
+} 
+
+#show: ilm.with(
+  title: [Tarea 2],
+  author: "Luis Fernando Torres Hernández",
+  paper-size: "us-letter",
+  date: datetime.today(),
+  abstract: [Técnicas de optimización heurísticas ],
+  table-of-contents: none,
+  figure-index: (enabled: false),
+  table-index: (enabled: true),
+  listing-index: (enabled: true)
+)
+
+= Implementación de Evolución Diferencial
+
+En esta práctica se desarrolló una implementación de Evolución diferencial 
+con el objetivo de realizar un análisis de clustering sobre un conjunto de 
+datos botánicos. El conjunto de datos utilizado corresponde a mediciones 
+morfológicas de 150 especímenes pertenecientes a tres especies distintas 
+del género Iris.
+
+Evolución Diferencial es una heurística poblacional, esto significa que en cada 
+iteración mantiene una cantidad fija de soluciones en memoria e intenta 
+mejorarlas.
+
+Se utilizaron las mediciones morfológicas de longitud y ancho de sépalos y 
+pétalos para caracterizar cada espécimen. Evolución diferencial se empleó 
+para encontrar la posición de los centroides correspondientes a los 
+clusters deseados.
+
+== Metodología
+
+Se implementó Evolución Diferencial con el método de mezcla binomial y los siguientes parámetros:
+
+- Población: 15, se observo mas estabilidad en los resultados de la búsqueda cuando se aumento 
+la población de 10 a 15.
+- Factor de mutación: 0.5
+- Factor de cruza: 0.3
+
+
+== Resultados
+
+Este algoritmo de búsqueda se evaluó en comparación con los resultados de Búsqueda Tabú,
+para esto se realizaron 30 ejecuciones de 200 iteraciones para cada uno de los algoritmos.
+Se guardaron los mejores resultados de cada una de las ejecuciones y se usaron para elaborar
+una gráfica de cajas (@diagrama). 
+
+#figure(
+  image("TSvsDE.png", width: 40%), caption: "Diagrama de cajas"
+)<diagrama>
+
+En la @diagrama se aprecia que para el numero de iteraciones usado Evolución Diferencial tiende a dar 
+mejores resultados que los obtenidos con Búsqueda Tabú, sin embargo se presentan mas valores 
+atípicos en los resultados de Evolución Diferencial y dichos valores son de peor calidad que los
+peores resultados obtenidos con Búsqueda Tabú.
+
+Los resultados atípicos obtenidos por Evolución Diferencial podrían indicar que para este problema se comporta 
+de una forma inestable, es probable que de algunos malos resultados.
+
+
+== Compilación y ejecución del código
+Para compilar y ejecutar el proyecto, es necesario tener instalado Go (Golang) versión 1.22 o superior. Los siguientes comandos deben ejecutarse desde el directorio raíz del proyecto:
+
+Compilación:
+```bash
+go get
+go build
+```
+
+El primer comando (*go get*) descargará las dependencias necesarias para el proyecto. El segundo comando (*go build*) compilará el código fuente y generará un ejecutable llamado *tarea2* si el sistema operativo es tipo Unix o *tarea2.exe* en Windows.
+
+Ejecución:
+- En sistemas tipo Unix
+```bash
+./tarea2
+```
+
+- En Windows
+```
+ tarea2.exe
+```
+
+Al ejecutar el programa, se realizarán 200 ejecuciones independientes del algoritmo de Evolución Diferencial. Al finalizar, se mostrará en la consola la mejor solución encontrada entre todas las ejecuciones. Además, se generará un archivo PNG llamado *boxplot.png*, que contiene un diagrama de cajas que muestra la distribución de los valores de la función objetivo obtenidos en cada ejecución.
+

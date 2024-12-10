@@ -1,8 +1,11 @@
 package main
 
 import (
+	"encoding/csv"
 	"fmt"
+	"log"
 	"math"
+	"os"
 
 	"gonum.org/v1/plot/plotter"
 )
@@ -25,9 +28,22 @@ func main() {
 			}
 		}
 	}
+
+	out, err := os.Create("TS.csv")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer out.Close()
+	w := csv.NewWriter(out)
+	for i := 0; i < 30; i++ {
+		_, cost := solve(data, 200, 20, 7)
+		w.Write([]string{fmt.Sprint(cost)})
+	}
+	w.Flush()
 	fmt.Println("Best cost: ", bestCost)
 	fmt.Println(bestSol[:50])
 	fmt.Println(bestSol[50:100])
 	fmt.Println(bestSol[100:])
 	makePlot(values, names)
+
 }

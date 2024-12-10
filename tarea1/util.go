@@ -84,6 +84,7 @@ func readData(file string) [][]float64 {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer f.Close()
 
 	reader := bufio.NewScanner(f)
 	for reader.Scan() {
