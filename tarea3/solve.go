@@ -5,20 +5,50 @@ import (
 	"math/rand"
 )
 
-func solve(data [][]float64, iter, population int, p, m, ps float32) ([]int, float64) {
+func solve(data [][]float64, iter, population int, p, m, ps float64) ([]int, float64) {
 	pop := initPop(population, len(data))
 	costs := make([]float64, population)
 	updateCosts(data, pop, costs)
 	bestSol := make([]int, len(data))
 	bi := getBest(costs)
 	bestCost := costs[bi]
+	copy(bestSol, pop[bi])
 
-	for i := range iter {
+	for i := 0; i < iter; i++ {
 		p1 := selectP(costs, ps)
 		p2 := selectP(costs, ps)
+		sons := make([][]int, len(p1)*2)
+		for j := range p1 {
+			sons[2*j] = make([]int, len(data))
+			sons[2*j+1] = make([]int, len(data))
+			copy(sons[2*j], pop[p1[j]])
+			copy(sons[2*j+1], pop[p2[j]])
+			for k := range len(data) {
+				if rand.Float64() < p {
+					tmp := sons[2*j][k]
+					sons[2*j][k] = sons[2*j+1][k]
+					sons[2*j+1][k] = tmp
+				}
+				if rand.Float64() < m {
+					sons[2*j][k] += rand.Intn(2) + 1
+					sons[2*j][k] %= 3
+				}
+				if rand.Float64() < m {
+					sons[2*j+1][k] += rand.Intn(2) + 1
+					sons[2*j+1][k] %= 3
+				}
+			}
+		}
+		for j := range pop {
+			copy(pop[j], sons[j])
+		}
+
+		updateCosts(data, pop, costs)
+		bi = getBest(costs)
+		bestCost = costs[bi]
+		copy(bestSol, pop[bi])
 	}
 
-	copy(bestSol, pop[bi])
 	return bestSol, bestCost
 }
 

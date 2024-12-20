@@ -8,7 +8,6 @@ import (
 )
 
 func main() {
-
 	data := readData("../IRIS.csv")
 	normalize(data)
 	values := make([]plotter.Values, 4)
