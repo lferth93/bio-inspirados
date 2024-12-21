@@ -45,8 +45,10 @@ func solve(data [][]float64, iter, population int, p, m, ps float64) ([]int, flo
 
 		updateCosts(data, pop, costs)
 		bi = getBest(costs)
-		bestCost = costs[bi]
-		copy(bestSol, pop[bi])
+		if costs[bi] < bestCost {
+			bestCost = costs[bi]
+			copy(bestSol, pop[bi])
+		}
 	}
 
 	return bestSol, bestCost

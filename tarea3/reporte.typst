@@ -1,0 +1,84 @@
+#import "@preview/ilm:1.3.0": *
+#set text(lang: "es")
+#show heading: it =>{
+  block(it.body)
+} 
+
+#show: ilm.with(
+  title: [Tarea 3],
+  author: "Luis Fernando Torres Hernández",
+  paper-size: "us-letter",
+  date: datetime.today(),
+  abstract: [Técnicas de optimización heurísticas ],
+  table-of-contents: none,
+  figure-index: (enabled: false),
+  table-index: (enabled: true),
+  listing-index: (enabled: true)
+)
+
+= Implementación de Algoritmos Genéticos para Clustering
+En esta practica se implemento un Algoritmo Genético para 
+encontrar tres clusters sobre el conjunto de datos de Iris 
+que se uso para las otras técnicas heurísticas.
+
+
+== Metodología
+Se elaboró un Algoritmo Genético generacional, esto significa que en cada
+generación la población es sustituida por la nueva generación de soluciones.
+
+La selección de padres para la cruza fue implementada mediante un torneo probabilístico
+del cual se obtuvieron dos conjuntos de candidatos con una probabilidad $P_s$.
+
+Se implemento una cruza uniforme con una probabilidad de cruza $P_c$.
+
+Debido a que es un Algoritmo Genético generacional en todo momento se tiene en 
+memoria a mejor solución histórica, y esta se actualiza en cada generación si
+es necesario.
+
+Los para metros usados para la optimización fueron:
+- Población: 50
+- $P_s$: 0.995
+- $P_c$: 0.5
+- Probabilidad de mutación: 0.001
+
+== Resultados
+Se realizaron 30 corridas de 50 generaciones cada una, los mejores costos de cada
+corrida se usaron para elaborar una gráfica de cajas (@diagrama).
+
+En la @diagrama se incluyen tres cajas, correspondientes a los resultados de 30 corridas 
+de Búsqueda Tabú y Evolución Diferencial.
+
+#figure(
+  image("TSvsGA.png", width: 50%), caption: "Diagrama de cajas"
+)<diagrama>
+
+Los resultados obtenidos indican que la implementación de Algoritmos Genéticos no
+supero a los resultados obtenidos por Búsqueda Tabú o Evolución Diferencial, esto
+puede ser debido a una mala elección de parámetros o que las técnicas de 
+selección y cruza no fueron adecuadas para este problema.
+
+== Compilación y ejecución del código
+Para compilar y ejecutar el proyecto, es necesario tener instalado Go (Golang) versión 1.22 o superior. Los siguientes comandos deben ejecutarse desde el directorio raíz del proyecto:
+
+Compilación:
+```bash
+go get
+go build
+```
+
+El primer comando (*go get*) descargará las dependencias necesarias para el proyecto. El segundo comando (*go build*) compilará el código fuente y generará un ejecutable llamado *tarea3* si el sistema operativo es tipo Unix o *tarea3.exe* en Windows.
+
+Ejecución:
+- En sistemas tipo Unix
+```bash
+./tarea3
+```
+
+- En Windows
+```
+ tarea3.exe
+```
+
+Al ejecutar el programa, se realizarán las 30 corridas y los resultados de los
+mejores costos de cada una serán guardados en el archivo *GA.csv*.
+
